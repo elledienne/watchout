@@ -22,7 +22,7 @@ Baloons.prototype.move = function(x, y) {
     .transition().duration(timing)
     .attr({
       "cx": function(d) { return d.x}, 
-      "cy": function(d){ return d.y}
+      "cy": function(d) { return d.y}
     });
 }
 
