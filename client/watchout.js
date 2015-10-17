@@ -2,6 +2,8 @@ var baloonContainer = [];
 var timing = 1100;
 var numberOfBaloons = 30;
 var playerScore = -1;
+var highScore = 0;
+var collisions = 0;
 
 var generateRandomCoordinates = function() {
   var result_arr = {};
@@ -11,11 +13,49 @@ var generateRandomCoordinates = function() {
 }
 
 var createBaloons = function(n){
-
   for(var i = 0; i < n; i++){
     var res_arr = generateRandomCoordinates();  
     baloonContainer[i] = new Baloons(res_arr.x, res_arr.y, 10);
     baloonContainer[i].create();
+  }
+}
+
+var isOverlap = function(circle, player) {
+  var d = Math.sqrt((player.cx - circle.cx) * (player.cx - circle.cx) + 
+                    (player.cy - circle.cy) * (player.cy - circle.cy));
+
+  if(d <= 20) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+var checkCordinates = function() {
+  var arrCircles = d3.select('svg').selectAll('circle');
+  var arrPlayer = d3.select('svg').selectAll('.player');
+
+  var playerObject = {};
+  var circleObject = {};
+  playerObject.cx = arrPlayer[0][0].cx.baseVal.value;
+  playerObject.cy = arrPlayer[0][0].cy.baseVal.value;
+
+  for(var i = 0; i < 30; i++) {
+    circleObject.cx = arrCircles[0][i].cx.baseVal.value;
+    circleObject.cy = arrCircles[0][i].cy.baseVal.value;
+    
+    if(isOverlap(circleObject, playerObject)) {
+      if(highScore < playerScore) {
+        highScore = playerScore;
+        d3.select('body').selectAll('.high-score')
+          .text(highScore);
+      }
+
+      playerScore = 0;
+      collisions++;
+      d3.select('body').selectAll('.collisions-score')
+          .text(collisions);
+    }
   }
 }
 
@@ -25,32 +65,25 @@ createBaloons(numberOfBaloons);
 var player = new Player(10, 10, 10, 'green');
 player.create();
 
-setInterval(function(){
-  Baloons.prototype.move()
-}, timing)
-
 var dragger = d3.behavior.drag()
-  .on('drag', function(d){
-    var x = d3.event.x;
-    var y = d3.event.y;
-    d3.select(this).attr('cx', x).attr('cy', y)
-  })
+.on('drag', function(d){
+  var x = d3.event.x;
+  var y = d3.event.y;
+  d3.select(this).attr('cx', x).attr('cy', y)
+});
 
 d3.select('svg').selectAll('.player')
-  .on("click", null).call(dragger);
+.on("click", null).call(dragger);
 
+setInterval(function(){
+  Baloons.prototype.move()
+}, timing);
 
-  var isOverlap = function(player, baloons) {
+setInterval(checkCordinates, 10);
 
-    for (var i = 0; i < baloons.length; i++) {
-      if(baloons[i].x === player.x && baloons[i].y === player.y) {
-        playerScore = 0;
-      }
-    }
-    console.log('Player score' + playerScore++);
+setInterval(function(){
+  playerScore++;
+  d3.select('body').selectAll('.current-score')
+    .text(playerScore);
+}, 50);
 
-  }
-
-  setInterval(isOverlap(player, baloonContainer), 50);
-
-                                                                                                                                                                                 

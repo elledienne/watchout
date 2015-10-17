@@ -11,11 +11,9 @@ Baloons.prototype.create = function (){
 }
 
 Baloons.prototype.move = function(x, y) {
-
   var coordinateArray = baloonContainer.map(function(){
     return generateRandomCoordinates();
   });
-
 
   d3.select('svg').selectAll('circle')
     .data(coordinateArray)
@@ -23,6 +21,6 @@ Baloons.prototype.move = function(x, y) {
     .attr({
       "cx": function(d) { return d.x}, 
       "cy": function(d) { return d.y}
-    });
+  });
 }
 
