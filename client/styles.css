@@ -1,5 +1,16 @@
-/* your beautiful css styling goes here! */
+circle {
+  -webkit-animation: clockwise 0.1s infinite linear;
+  -moz-animation: clockwise 0.1s infinite linear;
+  animation: clockwise 0.1s infinite linear;
+  transform-origin: 50% 50%;
+}
 
-/* Note: an asteroid image is included in this repo.
-Feel free to use it if you like. */
+@-webkit-keyframes clockwise {
+  0% { 
+    transform: rotate(0deg); 
+  }
+  100% { 
+    transform: rotate(360deg);
+  }
+}
 
