@@ -1,8 +1,8 @@
-var Player = function(top, left, radius, color){
+var Player = function(top, left, radius, image){
   this.top = top;
   this.left = left;
   this.radius = radius;
-  this.color = color;
+  this.image = image;
   this.class = 'player';
 }
 

@@ -6,16 +6,18 @@ var highScore = 0;
 var collisions = 0;
 
 var generateRandomCoordinates = function() {
-  var result_arr = {};
-  result_arr.x = Math.floor((Math.random() * 790) + 10);
-  result_arr.y = Math.floor((Math.random() * 790) + 10);
-  return result_arr;
+  var coordinates = {};
+  coordinates.x = Math.floor((Math.random() * 790));
+  coordinates.y = Math.floor((Math.random() * 790));
+
+  var coordinates = modifyBoundaries(coordinates.x, coordinates.y)
+  return coordinates;
 }
 
 var createBaloons = function(n){
   for(var i = 0; i < n; i++){
     var res_arr = generateRandomCoordinates();  
-    baloonContainer[i] = new Baloons(res_arr.x, res_arr.y, 10);
+    baloonContainer[i] = new Baloons(res_arr.x, res_arr.y, 10, 'url(#image)');
     baloonContainer[i].create();
   }
 }
@@ -59,16 +61,27 @@ var checkCordinates = function() {
   }
 }
 
+var modifyBoundaries = function(x, y){
+  x = x > 790 ? 790 : x;
+  x = x < 10 ? 10 : x;
+  y = y > 790 ? 790 : y;
+  y = y < 10 ? 10 : y;
+
+  return {x: x, y: y}; 
+}
+
 var newBoard = new Board(800, 800, '.board');
 newBoard.create();
 createBaloons(numberOfBaloons);
-var player = new Player(10, 10, 10, 'green');
+var player = new Player(10, 10, 10, 'url(#imagePlayer)');
 player.create();
 
 var dragger = d3.behavior.drag()
 .on('drag', function(d){
-  var x = d3.event.x;
-  var y = d3.event.y;
+  var coordinates = modifyBoundaries(d3.event.x, d3.event.y);
+  var x = coordinates.x
+  var y = coordinates.y;
+  
   d3.select(this).attr('cx', x).attr('cy', y)
 });
 

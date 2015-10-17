@@ -1,7 +1,12 @@
-circle {
-  -webkit-animation: clockwise 0.1s infinite linear;
-  -moz-animation: clockwise 0.1s infinite linear;
-  animation: clockwise 0.1s infinite linear;
+.board {
+  height: 800px;
+  width: 800px;
+  background: url('../img/bg.jpg') no-repeat;
+}
+.baloons {
+  -webkit-animation: clockwise 0.6s infinite linear;
+  -moz-animation: clockwise 0.6s infinite linear;
+  animation: clockwise 0.6s infinite linear;
   transform-origin: 50% 50%;
 }
 
